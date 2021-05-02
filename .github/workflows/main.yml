@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: yarn install
+        run: yarn install
+
       - uses: cschleiden/replace-tokens@v1
         with:
           files: '["public/config.js"]'
@@ -17,6 +21,7 @@ jobs:
           tokenSuffix: "}__"
         env:
           mongoUrl: ${{ secrets.MONGO_URL }}
+          
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
