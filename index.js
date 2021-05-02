@@ -12,10 +12,12 @@ const startup = async () => {
 
     app.use(cors())
     app.use(express.json())
+
+    const port = process.env.PORT || 3001
     
     const http = require('http').createServer(app)
-    http.listen(3001, function(){
-        console.log('listening on port 3001')
+    http.listen(port, function(){
+        console.log(`listening on port ${port}`)
     })
     
     

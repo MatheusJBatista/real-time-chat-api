@@ -1,0 +1,24 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["public/config.js"]'
+          tokenPrefix: "__{"
+          tokenSuffix: "}__"
+        env:
+          mongoUrl: ${{ secrets.MONGO_URL }}
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "real-time-chat-api"
+          heroku_email: "matheus_roberto_batista@hotmail.com"

@@ -1,9 +1,10 @@
 const MongoConnection = require('../configuration/mongo-connection')
 const messageRepository = require('./message-repository')
 const userRepository = require('./user-repository')
+const environment = require('../environments')
 
 const RepositoriesConfig = async () => {
-    const mongoConnection = new MongoConnection('mongodb://localhost:27017', 'real-time-chat')
+    const mongoConnection = new MongoConnection(environment.mongoUrl, 'real-time-chat')
     await mongoConnection.connect()
 
     const user = userRepository(mongoConnection)
@@ -11,7 +12,8 @@ const RepositoriesConfig = async () => {
 
     return {
         userRepository: user,
-        messageRepository: message
+        messageRepository: message,
+        mongoConnection
     }
 }
 

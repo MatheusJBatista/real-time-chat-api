@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "cross-env CLIENT_ENV=development node index.js",
+    "production": "cross-env CLIENT_ENV=production node index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
