@@ -1,22 +1,14 @@
 const MongoClient = require('mongodb').MongoClient
 
 class MongoConnection {
-    #connectionString
-    database = null
     client = null
-    
-    constructor(connectionString, dbName) {
-        this.#connectionString = connectionString
-        this.dbName = dbName
 
-    }
-
-    async connect() {
+    async connect(connectionString, dbName) {
         if(this.database) return
         try {
-            this.client = new MongoClient(this.#connectionString, { useUnifiedTopology: true })
+            this.client = new MongoClient(connectionString, { useUnifiedTopology: true })
             await this.client.connect()
-            this.database = this.client.db(this.dbName)
+            this.database = this.client.db(dbName)
             
         } catch (error) {
             throw error
@@ -33,4 +25,4 @@ class MongoConnection {
     }
 }
 
-module.exports = MongoConnection
+module.exports = new MongoConnection()

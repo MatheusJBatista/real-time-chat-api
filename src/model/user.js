@@ -1,9 +1,6 @@
-const ModelBase = require('./model-base')
-
-class User extends ModelBase{
+class User{
     
     constructor(name) {
-        super()
         this.name = name
     }
 }

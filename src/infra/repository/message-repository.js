@@ -1,10 +1,12 @@
-const messageRepository = mongoConnection => {
+const RepositoryBase = require("./repository-base")
 
-    const collection = mongoConnection.database.collection('message')
+class MessageRepository extends RepositoryBase {
+    constructor() {
+        super('message')
+    }
 
-    const insert = async user => await collection.insertOne(user)
-    const getByRoom = async room => {
-        return await collection
+    getByRoom = async room => {
+        return await this.collection
             .aggregate([
                 {
                     $match: {
@@ -12,10 +14,17 @@ const messageRepository = mongoConnection => {
                     }
                 },
                 {
+                    "$addFields": {
+                        "userId": {
+                            "$toObjectId": "$userId"
+                        }
+                    }
+                },
+                {
                     $lookup: {
                         from: 'user',
                         localField: 'userId',
-                        foreignField: 'id',
+                        foreignField: '_id',
                         as: 'user'
                     }
                 },
@@ -33,11 +42,6 @@ const messageRepository = mongoConnection => {
                 }
             ]).toArray()
     }
-
-    return {
-        insert,
-        getByRoom,
-    }
 }
 
-module.exports = messageRepository
+module.exports = MessageRepository

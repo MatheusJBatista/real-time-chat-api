@@ -1,11 +1,10 @@
-const messageService = repository => {
-    
-    const create = async ({room, userId, message}) => {
-        await repository.insert({ room, userId, message })
-    }
+const MessageRepository = require('../infra/repository/message-repository')
 
-    const getByRoom = async (room) => await repository.getByRoom(room)
+const createMessageService = () => {
+    const messageRepository = new MessageRepository()
     
+    const create = async ({room, userId, message}) => await messageRepository.insert({ room, userId, message })
+    const getByRoom = async (room) => await messageRepository.getByRoom(room)
 
     return {
         create,
@@ -13,4 +12,5 @@ const messageService = repository => {
     }
 }
 
-module.exports = messageService
+
+module.exports = createMessageService

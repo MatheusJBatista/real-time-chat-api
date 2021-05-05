@@ -1,26 +1,28 @@
 const User = require("../model/user")
+const UserRepository = require("../infra/repository/user-repository")
 
-const userService = repository => {
-    
+const createUserService = () => {
+    const userRepository = new UserRepository()
+
     const create = async ({name}) => {
         const userByName = await getByName(name)
-        if(userByName) return userByName.id
-
+        if(userByName) return userByName._id
+    
         const user = new User(name)
-        await repository.insert(user)
-
-        return user.id
+        await userRepository.insert(user)
+    
+        return user._id
     }
-
-    const getAll = async () => await repository.getAll()
+    
+    const getAll = async () => await userRepository.getAll()
+    
     const getById = async id => {
-        const user = await repository.getById(id)
-
+        const user = await userRepository.getById(id)
+    
         return user
     }
-
-    const getByName = async name => await repository.getByName(name)
     
+    const getByName = async name => await userRepository.getByName(name)
 
     return {
         create,
@@ -29,4 +31,6 @@ const userService = repository => {
     }
 }
 
-module.exports = userService
+    
+
+module.exports = createUserService
